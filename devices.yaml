@@ -1,0 +1,41 @@
+# A list of Android devices.
+#
+
+- name:    "5 Inch Internet Tablet"
+  maker:   Archos
+  chipset: "OMAP 3440"
+  screen:  "800x480"
+  gl:      true
+  market:  "Archos AppsLib"
+
+- name:    Dream
+  maker:   HTC
+  chipset: "Qualcomm MSM7201A"
+  screen:  "320x480"
+  gl:      true
+  market:  "Android Marketplace"
+
+- name:    Magic
+  maker:   HTC
+
+- name:    Tattoo
+  maker:   HTC
+
+- name:    Sholes
+  maker:   Motorola
+
+- name:    "Galaxy I7500"
+  maker:   Samsung
+  chipset: "Qualcomm MSM7200A"
+  freq:    528
+  screen:  "320x480"
+
+- name:    U8230
+  maker:   Huawei
+
+- name:    U8220
+  maker:   Huawei
+  screen:  "320x480"
+
+- name:    Etna
+  maker:   LG
