@@ -9,6 +9,7 @@
   market:  "Archos AppsLib"
 
 - name:    Dream
+  other:   G1
   maker:   HTC
   chipset: "Qualcomm MSM7201A"
   screen:  "320x480"
@@ -37,5 +38,6 @@
   maker:   Huawei
   screen:  "320x480"
 
-- name:    Etna
+- name:    GW620
+  other:   Etna
   maker:   LG
