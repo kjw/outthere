@@ -23,6 +23,11 @@
   maker:   HTC
 
 - name:    Sholes
+  other:   [ Tao ]
+  maker:   Motorola
+
+- name:    CLIQ
+  other:   [ DEXT ]
   maker:   Motorola
 
 - name:    "Galaxy I7500"
@@ -39,5 +44,9 @@
   screen:  "320x480"
 
 - name:    GW620
-  other:   Etna
+  other:   [ Etna ]
   maker:   LG
+
+- name:    Dragon
+  maker:   HTC
+  chipset: "Qualcomm Snapdragon"
