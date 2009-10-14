@@ -121,7 +121,7 @@ public class Point2D
     
     public static Point2D arbitrary(Gen gen)
     {
-       int maxDi = gen.getIntParam(PARAM_MAX_DI);
+       int maxDi = gen.getParams().getInt(PARAM_MAX_DI);
        
        switch (gen.select(0.1f, 0.45f, 0.45f))
        {

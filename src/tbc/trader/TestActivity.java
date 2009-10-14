@@ -11,6 +11,7 @@ import tbc.scene.PlaneWorld;
 import tbc.scene.Scene;
 import tbc.scene.SceneActivity;
 import tbc.supercheck.Gen;
+import tbc.supercheck.ParameterBunch;
 import tbc.trader.Info.ShipType;
 import tbc.trader.junk.Cube;
 import tbc.trader.mobiles.Ship;
@@ -50,7 +51,8 @@ public class TestActivity extends SceneActivity
         playerShip.setWeapon(0, new Item(context.getInfoSet().get("weapon/pow")));
         playerShip.setWeaponSlotPrepared(0, true);
         
-        for (int i=0; i<150; i++) {
+        for (int i=0; i<150; i++) 
+        {
         	Cube c = Cube.arbitrary(Gen.g());
         	Point3D p = Point3D.arbitrary(Gen.g());
         	p.z = 0.0f;
@@ -61,10 +63,15 @@ public class TestActivity extends SceneActivity
         return s;
     }
     
-    private static void setupQuickCheckParams() {
-    	Gen gen = Gen.g();
-    	gen.setIntParam(Point3D.PARAM_MAX_DI, 40);
-    	gen.setIntParam(Cube.PARAM_MAX_DI, 5);
+    private static void setupQuickCheckParams() 
+    {
+    	ParameterBunch pb = new ParameterBunch();
+    	
+    	pb.setInt(Point3D.PARAM_MAX_DI, 40);
+    	pb.setInt(Point2D.PARAM_MAX_DI, 40);
+    	pb.setInt(Cube.PARAM_MAX_DI, 5);
+    	
+    	Gen.g().setParams(pb);
     }
     
     @Override

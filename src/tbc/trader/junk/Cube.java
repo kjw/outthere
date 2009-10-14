@@ -84,7 +84,7 @@ public class Cube extends ScnObj
     }
     
     public static Cube arbitrary(Gen gen) {
-    	int maxDi = gen.getIntParam(PARAM_MAX_DI);
+    	int maxDi = gen.getParams().getInt(PARAM_MAX_DI);
     	
     	switch (gen.select(0.1f, 0.9f)) {
     	case 0:
