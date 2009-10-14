@@ -7,6 +7,8 @@ public class Point2D
 {
     public static final Point2D ZERO = new Point2D(0.0f, 0.0f);
     
+    public static final String PARAM_MAX_DI = "Point2D.MAX_DI";
+    
     public float x;
     public float y;
     
@@ -119,12 +121,16 @@ public class Point2D
     
     public static Point2D arbitrary(Gen gen)
     {
-        switch (gen.select(0.1f, 0.9f))
-        {
-        case 0:
-            return ZERO;
-        case 1: default:
-            return new Point2D(gen.arbFloat(), gen.arbFloat());
-        }
+       int maxDi = gen.getIntParam(PARAM_MAX_DI);
+       
+       switch (gen.select(0.1f, 0.45f, 0.45f))
+       {
+       case 0:
+           return ZERO;
+       case 1:
+    	   return new Point2D(-gen.arbFloat(maxDi), -gen.arbFloat(maxDi));
+       case 2: default:
+           return new Point2D(gen.arbFloat(maxDi), gen.arbFloat(maxDi));
+       }
     }
 }

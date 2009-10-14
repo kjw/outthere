@@ -6,11 +6,15 @@ import java.nio.IntBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import tbc.data.spatial.Point3D;
 import tbc.scene.ScnObj;
+import tbc.supercheck.Gen;
 
 public class Cube extends ScnObj
 {
     
+	public static final String PARAM_MAX_DI = "Cube.MAX_DI";
+	
     public Cube(float diameter)
     {
         int one = (int) (0x10000 * diameter);
@@ -77,6 +81,17 @@ public class Cube extends ScnObj
         gl.glVertexPointer(3, gl.GL_FIXED, 0, mVertexBuffer);
         gl.glColorPointer(4, gl.GL_FIXED, 0, mColorBuffer);
         gl.glDrawElements(gl.GL_TRIANGLES, 36, gl.GL_UNSIGNED_BYTE, mIndexBuffer);
+    }
+    
+    public static Cube arbitrary(Gen gen) {
+    	int maxDi = gen.getIntParam(PARAM_MAX_DI);
+    	
+    	switch (gen.select(0.1f, 0.9f)) {
+    	case 0:
+    		return new Cube(0.0f);
+    	case 1: default:
+    		return new Cube(gen.arbFloat(maxDi));
+    	}
     }
 
     private IntBuffer   mVertexBuffer;

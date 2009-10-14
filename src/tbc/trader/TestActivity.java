@@ -1,5 +1,7 @@
 package tbc.trader;
 
+import java.util.Random;
+
 import android.content.Context;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -8,6 +10,7 @@ import tbc.data.spatial.Point3D;
 import tbc.scene.PlaneWorld;
 import tbc.scene.Scene;
 import tbc.scene.SceneActivity;
+import tbc.supercheck.Gen;
 import tbc.trader.Info.ShipType;
 import tbc.trader.junk.Cube;
 import tbc.trader.mobiles.Ship;
@@ -30,6 +33,8 @@ public class TestActivity extends SceneActivity
     @Override
     protected Scene onCreateScene()
     {
+    	setupQuickCheckParams();
+    	
         player = new Player();
         world = new PlaneWorld(-10000f, -10000f, 10000f, 10000f);
         Scene s = new Scene();
@@ -45,19 +50,21 @@ public class TestActivity extends SceneActivity
         playerShip.setWeapon(0, new Item(context.getInfoSet().get("weapon/pow")));
         playerShip.setWeaponSlotPrepared(0, true);
         
-        Cube cube1 = new Cube(15.0f);
-        cube1.setRelativePos(new Point3D(-30.0f, 40.0f, 0.0f));
-        world.addChild(cube1);
-        
-        Cube cube2 = new Cube(15.0f);
-        cube2.setRelativePos(new Point3D(-45.0f, 20.0f, 0.0f));
-        world.addChild(cube2);
-        
-        Cube cube3 = new Cube(20.0f);
-        cube3.setRelativePos(new Point3D(30.0f, -35.0f, 0.0f));
-        world.addChild(cube3);
+        for (int i=0; i<150; i++) {
+        	Cube c = Cube.arbitrary(Gen.g());
+        	Point3D p = Point3D.arbitrary(Gen.g());
+        	p.z = 0.0f;
+        	c.setRelativePos(p);
+        	world.addChild(c);
+        }
         
         return s;
+    }
+    
+    private static void setupQuickCheckParams() {
+    	Gen gen = Gen.g();
+    	gen.setIntParam(Point3D.PARAM_MAX_DI, 40);
+    	gen.setIntParam(Cube.PARAM_MAX_DI, 5);
     }
     
     @Override

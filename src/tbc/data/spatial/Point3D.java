@@ -6,6 +6,8 @@ public class Point3D
 {
     public static final Point3D ZERO = new Point3D(0.0f, 0.0f, 0.0f);
     
+    public static final String PARAM_MAX_DI = "Point3D.MAX_DI";
+    
     public float x;
     public float y;
     public float z;
@@ -128,12 +130,16 @@ public class Point3D
     
     public static Point3D arbitrary(Gen gen)
     {
-       switch (gen.select(0.1f, 0.9f))
+       int maxDi = gen.getIntParam(PARAM_MAX_DI);
+       
+       switch (gen.select(0.1f, 0.45f, 0.45f))
        {
        case 0:
            return ZERO;
-       case 1: default:
-           return new Point3D(gen.arbFloat(), gen.arbFloat(), gen.arbFloat());
+       case 1:
+    	   return new Point3D(-gen.arbFloat(maxDi), -gen.arbFloat(maxDi), -gen.arbFloat(40));
+       case 2: default:
+           return new Point3D(gen.arbFloat(maxDi), gen.arbFloat(maxDi), gen.arbFloat(40));
        }
     }
 
