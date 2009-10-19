@@ -22,8 +22,8 @@
 - name:    Tattoo
   maker:   HTC
 
-- name:    Sholes
-  other:   [ Tao ]
+- name:    Droid
+  other:   [ Tao, Sholes ]
   maker:   Motorola
 
 - name:    CLIQ
@@ -50,3 +50,11 @@
 - name:    Dragon
   maker:   HTC
   chipset: "Qualcomm Snapdragon"
+
+- name:    Liquid
+  maker:   Acer
+  chipset: "Qualcomm QSD 8250"
+  freq:    768
+  screen:  "800x480"
+  ram:     256
+  rom:     512
