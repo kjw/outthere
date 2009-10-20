@@ -4,6 +4,7 @@ import tbc.supercheck.Gen;
 
 public class Bounds
 {
+    public static final String PARAM_MAX_DI = "Bounds.MAX_DI";
     
     public float x1;
     public float y1;
@@ -80,10 +81,12 @@ public class Bounds
     
     public static Bounds arbitrary(Gen gen) 
     {
-        float fstX = gen.arbFloat();
-        float sndX = gen.arbFloat();
-        float fstY = gen.arbFloat();
-        float sndY = gen.arbFloat();
+    	final int maxDi = gen.getParams().getInt(PARAM_MAX_DI, 1000);
+    	
+        float fstX = gen.arbFloat(maxDi);
+        float sndX = gen.arbFloat(maxDi);
+        float fstY = gen.arbFloat(maxDi);
+        float sndY = gen.arbFloat(maxDi);
         return new Bounds(fstX < sndX ? fstX : sndX,
                           fstY < sndY ? fstY : sndY,
                           fstX > sndX ? fstX : sndX,

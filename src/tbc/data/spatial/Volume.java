@@ -4,6 +4,8 @@ import tbc.supercheck.Gen;
 
 public class Volume
 {
+	public static final String PARAM_MAX_DI = "Volume.MAX_DI";
+	
     public float x1;
     public float y1;
     public float z1;
@@ -63,12 +65,14 @@ public class Volume
     
     public static Volume arbitrary(Gen gen)
     {
-        float fstX = gen.arbFloat();
-        float sndX = gen.arbFloat();
-        float fstY = gen.arbFloat();
-        float sndY = gen.arbFloat();
-        float fstZ = gen.arbFloat();
-        float sndZ = gen.arbFloat();
+    	final int maxDi = gen.getParams().getInt(PARAM_MAX_DI, 1000);
+    	
+        float fstX = gen.arbFloat(maxDi);
+        float sndX = gen.arbFloat(maxDi);
+        float fstY = gen.arbFloat(maxDi);
+        float sndY = gen.arbFloat(maxDi);
+        float fstZ = gen.arbFloat(maxDi);
+        float sndZ = gen.arbFloat(maxDi);
         return new Volume(fstX < sndX ? fstX : sndX,
                           fstX > sndX ? fstX : sndX,
                           fstY < sndY ? fstY : sndY,
