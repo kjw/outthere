@@ -1,8 +1,7 @@
 package tbc.trader;
 
-import java.util.Random;
-
 import android.content.Context;
+import android.hardware.SensorManager;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import tbc.data.spatial.Point2D;
@@ -12,7 +11,9 @@ import tbc.scene.Scene;
 import tbc.scene.SceneActivity;
 import tbc.supercheck.Gen;
 import tbc.supercheck.ParameterBunch;
+import tbc.test.RunSuperCheck;
 import tbc.trader.Info.ShipType;
+import tbc.trader.controls.AccelCamera;
 import tbc.trader.junk.Cube;
 import tbc.trader.mobiles.Ship;
 
@@ -34,9 +35,11 @@ public class TestActivity extends SceneActivity
     @Override
     protected Scene onCreateScene()
     {
-    	setupQuickCheckParams();
+    	Gen.g().setParams(RunSuperCheck.getTestParams());
     	
         player = new Player();
+        player.addCameraControl(new AccelCamera(getApplicationContext()));
+        
         world = new PlaneWorld(-10000f, -10000f, 10000f, 10000f);
         Scene s = new Scene();
         GameContext context = new GameContext(DATA_SET);
@@ -63,21 +66,9 @@ public class TestActivity extends SceneActivity
         return s;
     }
     
-    private static void setupQuickCheckParams() 
-    {
-    	ParameterBunch pb = new ParameterBunch();
-    	
-    	pb.setInt(Point3D.PARAM_MAX_DI, 40);
-    	pb.setInt(Point2D.PARAM_MAX_DI, 40);
-    	pb.setInt(Cube.PARAM_MAX_DI, 5);
-    	
-    	Gen.g().setParams(pb);
-    }
-    
     @Override
     protected SceneView onCreateSceneView(Context context, Scene scene)
     {
-        // TODO Auto-generated method stub
         return new SceneActivity.SceneView(context, scene)
         {
             @Override

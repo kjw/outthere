@@ -9,6 +9,7 @@ import android.util.Log;
 import tbc.data.Constants;
 import tbc.data.spatial.Axis;
 import tbc.data.spatial.Point2D;
+import tbc.data.spatial.Point3D;
 import tbc.scene.PlaneWorld;
 import tbc.trader.mobiles.Ship;
 import tbc.util.Later;
@@ -31,7 +32,10 @@ public class Player implements Ship.AiDelegate
     
     private ArrayList<ManeuverInfo> activeManeuvers = new ArrayList<ManeuverInfo>();
     
-    /** A maneuver alters the forward or angular acceleration of the player ship 
+    private ArrayList<CameraControl> cameraControls = new ArrayList<CameraControl>();
+    
+    /** 
+     * A maneuver alters the forward or angular acceleration of the player ship 
      * while in an attempt to get another component, such as position or velocity, 
      * to a particular value.
      */
@@ -117,7 +121,15 @@ public class Player implements Ship.AiDelegate
         /* Again, we don't do AI here, but instead update the camera position
          * to centre on the player ship's new location.
          */
-        ship.getWorld().setViewCentroid(ship.getAbsolutePos());
+    	Point3D panningOffset = new Point3D(0.0f, 0.0f, 0.0f);
+    	
+    	for (CameraControl cc : cameraControls) {
+    		if (cc.hasCameraOffsetChanged()) {
+    			panningOffset.add(cc.getCameraOffset());
+    		}
+    	}
+    	
+        ship.getWorld().setViewCentroid(ship.getAbsolutePos().add(panningOffset));
     }
     
     /** Firing will begin a number of milliseconds after this call, unless
@@ -207,6 +219,15 @@ public class Player implements Ship.AiDelegate
                 }
             }
         });  
+    }
+    
+    /** Add a user control that modified the camera origin. */
+    public void addCameraControl(CameraControl cc)
+    {
+    	if (!cameraControls.contains(cc))
+    	{
+    		cameraControls.add(cc);
+    	}
     }
     
     private void addManeuver(ManeuverType mt, float val)
@@ -308,4 +329,16 @@ public class Player implements Ship.AiDelegate
         }
         }
     }
+    
+	/**
+	 * Implement one of these and register it with the player to provide an
+	 * additional camera offset each frame. Note we poll the modifier from here -
+	 * the modifier does not send us events. That is because we to read new offsets
+	 * at our own pace - once per new frame.
+	 */
+	public interface CameraControl
+	{
+		public Point3D getCameraOffset();
+		public boolean hasCameraOffsetChanged();
+	}
 }
