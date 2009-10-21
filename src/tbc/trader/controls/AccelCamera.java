@@ -55,7 +55,9 @@ public class AccelCamera implements Player.CameraControl, SensorEventListener {
 
 	@Override
 	public boolean hasCameraOffsetChanged() {
-		return supported && hasChanged;
+		synchronized (this) {
+			return supported && hasChanged;
+		}
 	}
 
 	@Override
