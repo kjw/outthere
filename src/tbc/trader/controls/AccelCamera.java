@@ -33,13 +33,10 @@ public class AccelCamera implements Player.CameraControl, SensorEventListener {
 	/** Scene units per sensor unit per nano second. */
 	private static final float RATE_PER_NANO = RATE_PER_SECOND / 1000000000;
 	
-	private Point3D accumulatedOffset = new Point3D(0.0f, 0.0f, 0.0f);
-	
+	private Point3D     accumulatedOffset = new Point3D(0.0f, 0.0f, 0.0f);
 	private SensorEvent lastAccelEvent;
-	
-	private boolean hasChanged = false;
-	
-	private boolean supported = false;
+	private boolean     hasChanged = false;
+	private boolean     supported = false;
 
 	public AccelCamera(Context context) {
 		SensorManager sm = (SensorManager) context.getSystemService(SENSOR_SERVICE);
@@ -50,8 +47,10 @@ public class AccelCamera implements Player.CameraControl, SensorEventListener {
 	
 	@Override
 	public Point3D getCameraOffset() {
-		hasChanged = false;
-		return accumulatedOffset;
+		synchronized (this) {
+			hasChanged = false;
+			return accumulatedOffset.copy();
+		}
 	}
 
 	@Override
@@ -66,19 +65,23 @@ public class AccelCamera implements Player.CameraControl, SensorEventListener {
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 		if (event.sensor.getType() == SENSOR_ACCELEROMETER) {
-			if (lastAccelEvent != null) {
-				/* Determine rate of change of the X and Y axis. */
-				long elapsedNanos = event.timestamp - lastAccelEvent.timestamp;
-				float xDelta = event.values[DATA_X] - lastAccelEvent.values[DATA_X];
-				float yDelta = event.values[DATA_Y] - lastAccelEvent.values[DATA_Y];
-				
-				accumulatedOffset.x += (xDelta * elapsedNanos) * RATE_PER_NANO;
-				accumulatedOffset.y += (yDelta * elapsedNanos) * RATE_PER_NANO;
-				
-				Log.i("AccelCamera", xDelta + ", " + yDelta);
+			synchronized (this) {
+				if (lastAccelEvent != null) {
+					/* Determine rate of change of the X and Y axis. */
+					long elapsedNanos = event.timestamp - lastAccelEvent.timestamp;
+					float xDelta = event.values[DATA_X] - lastAccelEvent.values[DATA_X];
+					float yDelta = event.values[DATA_Y] - lastAccelEvent.values[DATA_Y];
+
+					accumulatedOffset.x += (xDelta * elapsedNanos) * RATE_PER_NANO;
+					accumulatedOffset.y += (yDelta * elapsedNanos) * RATE_PER_NANO;
+
+					hasChanged = true;
+
+					Log.i("AccelCamera", xDelta + ", " + yDelta);
+				}
+
+				lastAccelEvent = event;
 			}
-			
-			lastAccelEvent = event;
 		}
 	}
 

@@ -1,7 +1,6 @@
 package tbc.trader;
 
 import android.content.Context;
-import android.hardware.SensorManager;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import tbc.data.spatial.Point2D;
@@ -10,7 +9,6 @@ import tbc.scene.PlaneWorld;
 import tbc.scene.Scene;
 import tbc.scene.SceneActivity;
 import tbc.supercheck.Gen;
-import tbc.supercheck.ParameterBunch;
 import tbc.test.RunSuperCheck;
 import tbc.trader.Info.ShipType;
 import tbc.trader.controls.AccelCamera;
